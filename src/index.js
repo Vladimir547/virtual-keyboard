@@ -3,25 +3,25 @@ import './style/main.css';
 console.log('1');
 const KEY_CODE = ["Backquote", "Digit1", "Digit2", "Digit3", "Digit4", "Digit5", "Digit6", "Digit7", "Digit8", "Digit9", "Digit0", "Minus", "Equal", "Backspace", "Tab", "KeyQ", "KeyW", "KeyE", "KeyR", "KeyT", "KeyY", "KeyU", "KeyI", "KeyO", "KeyP", "BracketLeft", "BracketRight", "Backslash", "Delete", "CapsLock", "KeyA", "KeyS", "KeyD", "KeyF", "KeyG", "KeyH", "KeyJ", "KeyK", "KeyL", "Semicolon", "Quote", "Enter", "ShiftLeft", "KeyZ", "KeyX", "KeyC", "KeyV", "KeyB", "KeyN", "KeyM", "Comma", "Period", "Slash", "ArrowUp", "ShiftRight", "ControlLeft", "MetaLeft", "AltLeft", "Space", "AltRight", "ArrowLeft", "ArrowDown", "ArrowRight", "ControlRight"];
 
-const KEYS_SHOW_EN = ['`', '1', "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", 'Backspace',
+const KEYS_EN = ['`', '1', "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", 'Backspace',
         'Tab', "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "[", "]", "\\", 'Delete',
         'CapsLock', "a", "s", "d", "f", "g", "h", "j", "k", "l", ";", "'", 'Enter',
         "Shift", "z", "x", "c", "v", "b", "n", "m", ",", ".", "/", '&uarr;', "Shift",
         "Control", "Meta", "Alt", "Space", "Alt", "&larr;", "&darr;", "&rarr;", "Control"
 ];
-const KEYS_SHOW_EN_CAPS = ['~', '!', "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", 'Backspace',
+const KEYS_EN_CAPS = ['~', '!', "@", "#", "$", "%", "^", "&", "*", "(", ")", "_", "+", 'Backspace',
         'Tab', "Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P", "{", "}", "|", 'Delete',
         'CapsLock', "A", "S", "D", "F", "G", "H", "J", "K", "L", ":", '"', 'Enter',
         "Shift", "Z", "X", "C", "V", "B", "N", "M", "<", ">", "?", '&uarr;', "Shift",
         "Control", "Meta", "Alt", "Space", "Alt", "&larr;", "&darr;", "&rarr;", "Control"
 ];
-const KEYS_SHOW_RUS = ['ё', '1', "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", 'Backspace',
+const KEYS_RUS = ['ё', '1', "2", "3", "4", "5", "6", "7", "8", "9", "0", "-", "=", 'Backspace',
         'Tab', "й", "ц", "у", "к", "е", "н", "г", "ш", "щ", "з", "х", "ъ", "\\", 'Delete',
         'CapsLock', "ф", "ы", "в", "а", "п", "р", "о", "л", "д", "ж", "э", 'Enter',
         "Shift", "я", "ч", "с", "м", "и", "т", "ь", "б", "ю", ".", '&uarr;', "Shift",
         "Control", "Meta", "Alt", "Space", "Alt", "&larr;", "&darr;", "&rarr;", "Control"
 ];
-const KEYS_SHOW_RUS_CAPS = ['Ё', '!', '"', "№", ";", "%", ":", "?", "*", "(", ")", "_", "+", 'Backspace',
+const KEYS_RUS_CAPS = ['Ё', '!', '"', "№", ";", "%", ":", "?", "*", "(", ")", "_", "+", 'Backspace',
         'Tab', "Й", "Ц", "У", "К", "Е", "Н", "Г", "Ш", "Щ", "З", "Х", "Ъ", "/", 'Delete',
         'CapsLock', "Ф", "Ы", "В", "А", "П", "Р", "О", "Л", "Д", "Ж", "Э", 'Enter',
         "Shift", "Я", "Ч", "С", "М", "И", "Т", "Ь", "Б", "Ю", ",", '&uarr;', "Shift",
@@ -32,216 +32,214 @@ const KEY_WHICH = [192, 49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 189, 187, 8, 9, 
 
 class Keyboard {
     constructor() {
-        //this.isEng = JSON.parse(localStorage.getItem('isEng'));
+        this.isEng = JSON.parse(localStorage.getItem('isEng'));
         this.isCapsLock = false;
         this.isShift = false;
         this.KEY_CODE = KEY_CODE;
-        this.KEYS_SHOW_EN = KEYS_SHOW_EN;
-        this.KEYS_SHOW_EN_CAPS = KEYS_SHOW_EN_CAPS;
-        this.KEYS_SHOW_RUS = KEYS_SHOW_RUS;
-        this.KEYS_SHOW_RUS_CAPS = KEYS_SHOW_RUS_CAPS;
+        this.KEYS_EN = KEYS_EN;
+        this.KEYS_EN_CAPS = KEYS_EN_CAPS;
+        this.KEYS_RUS = KEYS_RUS;
+        this.KEYS_RUS_CAPS = KEYS_RUS_CAPS;
         this.KEY_WHICH = KEY_WHICH;
+        this.body = document.querySelector('body');
     }
-    createDOM() {
-        this.TEXTAREA = document.createElement('textarea');
-        this.WRAPPER = document.createElement('div');
-        this.KEYBOARD = document.createElement('div');
-        this.KEYBOARD.classList.add('keyboard-wrapper');
-        this.WRAPPER.classList.add('wrapper');
-        const BODY = document.querySelector('body');
-        BODY.appendChild(this.WRAPPER);
-        this.WRAPPER.appendChild(this.TEXTAREA);
-        this.WRAPPER.appendChild(this.KEYBOARD);
-        this.BUTTON = document.createElement('button');
-        this.BUTTON.innerText = 'Сlear input field';
-        this.BUTTON.classList.add('button-clean');
-        this.WRAPPER.appendChild(this.BUTTON);
-        this.BUTTON = document.querySelector('button');
-        this.BUTTON.addEventListener('click', () => {
-            this.TEXTAREA.innerText = '';
-        });
-        this.HELPER = document.createElement('div');
-        this.HELPER.innerText = 'Ctrl + alt - change language';
-        this.HELPER.classList.add('helper');
-        this.WRAPPER.appendChild(this.HELPER);
+    createDisplay(){
+        this.textarea = document.createElement('textarea');
+        this.textarea.classList.add('text');
+        this.wrapper = document.createElement('div');
+        this.wrapper.classList.add('wrapper');
+        this.keyboard = document.createElement('div');
+        this.keyboard.classList.add('keyboard-wrapper');
+        this.body.prepend(this.wrapper);
+        this.wrapper.append(this.textarea);
+        this.wrapper.append(this.keyboard);
+        this.button = document.createElement('button');
+        this.button.innerText = 'clear';
+        this.button.classList.add('clear');
+        this.wrapper.append(this.button);
+        this.changeText = document.createElement('div');
+        this.changeText.innerHTML = 'press ctrl + alt - change lang';
+        this.wrapper.append(this.changeText);
     }
-
-    changeCaseLayout(keyValue, index, isEng, isCapsLock, isShift) {
-        if (isEng) keyValue = this.KEYS_SHOW_EN[index];
-        if (isEng && isCapsLock) keyValue = this.KEYS_SHOW_EN_CAPS[index];
-        if (isShift && isEng && isCapsLock) keyValue = this.KEYS_SHOW_EN[index];
-        else if (isEng && isShift) keyValue = this.KEYS_SHOW_EN_CAPS[index];
-        if (!isEng) keyValue = this.KEYS_SHOW_RUS[index];
-        if (!isEng && isCapsLock) keyValue = this.KEYS_SHOW_RUS_CAPS[index];
-        if (isShift && !isEng && isCapsLock) keyValue = this.KEYS_SHOW_RUS[index];
-        else if (!isEng && isShift) keyValue = this.KEYS_SHOW_RUS_CAPS[index];
+    changeCase(keyValue, index, isEng, isCapsLock, isShift){
+        if (isEng) keyValue = this.KEYS_EN[index];
+        if (isEng && isCapsLock) keyValue = this.KEYS_EN_CAPS[index];
+        if (isShift && isEng && isCapsLock) keyValue = this.KEYS_EN[index];
+        else if (isEng && isShift) keyValue = this.KEYS_EN_CAPS[index];
+        if (!isEng) keyValue = this.KEYS_RUS[index];
+        if (!isEng && isCapsLock) keyValue = this.KEYS_RUS_CAPS[index];
+        if (isShift && !isEng && isCapsLock) keyValue = this.KEYS_RUS[index];
+        else if (!isEng && isShift) keyValue = this.KEYS_RUS_CAPS[index];
         return keyValue;
     }
-
-    addKeysOnKeyboard() {
-        this.KEYBOARD.querySelectorAll('span').forEach(item => {
-            item.remove();
-        })
-
-        this.KEY_WHICH.forEach((key, index) => {
-            let keyValue = '';
-            keyValue = this.changeCaseLayout(keyValue, index, this.isEng, this.isCapsLock, this.isShift);
-
-            let keyClass = 'key ';
-            if (index == 14 || index == 29 || index == 42 || index == 55) {
-                this.KEYBOARD.innerHTML += '<span style="clear: both; display: block; width: 100%"></span>';
+    addKeys(){
+        for(let i = 0; i < this.KEY_WHICH.length; i += 1){
+            this.keyValue = '';
+            this.oneKey = document.createElement('button');
+            this.keyValue += this.changeCase(this.keyValue, i, this.isEng, this.isCapsLock, this.isShift);
+            this.oneKey.classList.add('key');
+            this.oneKey.setAttribute('id', `${this.keyValue.charCodeAt()}`);
+            this.oneKey.setAttribute('data-code', `${this.KEY_CODE[i]}`);
+            this.oneKey.setAttribute('data', `${this.KEY_WHICH[i]}`);
+            if (this.keyValue == 'Backspace' || this.keyValue == 'CapsLock' || this.keyValue == 'Enter' ||  this.keyValue =='Shift' ) {
+                this.oneKey.classList.add('long-control-key');
+                this.oneKey.classList.add('control-key-background');
+            } 
+            if(this.keyValue == 'Control'){
+                this.keyValue = 'Ctrl';
+                this.oneKey.classList.add('control-key-background');
             }
-            if (key == 8) {
-                keyValue = 'Backspace';
-                keyClass += 'long-control-key control-key-background';
+            if(this.keyValue == 'Tab' || this.keyValue == 'Delete' || this.keyValue == 'Meta' || this.keyValue == 'Alt' || this.keyValue == 'Space'|| this.keyValue == '&larr;'|| this.keyValue == '&darr;' || this.keyValue == '&rarr;'|| this.keyValue == '&uarr;'){
+                this.oneKey.classList.add('control-key-background');
             }
-            if (key == 9) {
-                keyValue = 'Tab';
-                keyClass += 'short-control-key control-key-background';
+            if(this.keyValue == 'Space'){
+                this.keyValue = ' ';
+                this.oneKey.classList.add('backspace-key');
             }
-            if (key == 46) {
-                keyValue = 'Del';
-                keyClass += 'control-key-background';
+            if(this.keyValue == 'Delete'){
+                this.keyValue = 'Del' ;
             }
-            if (key == 20) {
-                keyValue = 'CapsLock';
-                keyClass += 'long-control-key control-key-background';
+            if(this.keyValue == 'Meta'){
+                this.keyValue = 'win' ;
             }
-            if (key == 13) {
-                keyValue = 'Enter';
-                keyClass += 'long-control-key control-key-background';
-            }
-            if (key == 16 || key == 'ShiftRight') {
-                keyValue = 'Shift';
-                keyClass += 'long-control-key control-key-background';
-            }
-            if (key == 17 || key == 'ControlRight') {
-                keyValue = 'Ctrl';
-                keyClass += 'short-control-key control-key-background';
-            }
-            if (key == 91 || key == 'MetaRight') {
-                keyValue = 'Win';
-                keyClass += 'short-control-key control-key-background';
-            }
-            if (key == 18 || key == 'AltRight') {
-                keyValue = 'Alt';
-                keyClass += 'short-control-key control-key-background';
-            }
-            if (key == ' ' || key == 'Space' || key == 32) {
-                keyValue = " ";
-                keyClass += 'backspace-key';
-            }
-            if (key == 38 || key == 40 || key == 37 || key == 39)
-                keyClass += 'short-control-key control-key-background';
-
-            this.KEYBOARD.innerHTML += `<span class="${keyClass}" data=${key} datacode=${this.KEY_CODE[index]} id="${keyValue.charCodeAt()}"> ${keyValue} </span>`;
-        });
-
-        let shiftLeft = document.querySelector('span.key[datacode="ShiftLeft"]');
-        let shifRight = document.querySelector('span.key[datacode="ShiftRight"]');
-        if (this.isShift == true) {
-            if (event.code === 'ShiftLeft') shiftLeft.classList.add('active-shift');
-            else if (event.code === 'ShiftRight') shifRight.classList.add('active-shift');
+            this.oneKey.innerHTML = this.keyValue;
+            this.keyboard.append(this.oneKey);
         }
-        this.CAPSLOCK = document.getElementById('67');
     }
-
-    keyUpHendler(event) {
+    keyCaps(){
+        let buttons = document.querySelectorAll('.key');
+        for(let i = 0; i < buttons.length; i += 1){
+            let keyValue = '';
+            if(this.isEng){
+                keyValue = this.isShift ? this.KEYS_EN_CAPS[i] : this.KEYS_EN[i];
+            } else {
+                keyValue = this.isShift ? this.KEYS_RUS_CAPS[i] : this.KEYS_RUS[i];
+            }
+            if(keyValue == 'Control'){
+                keyValue = 'Ctrl';
+            }
+            if(keyValue == 'Space'){
+                keyValue = ' ';
+            }
+            if(keyValue == 'Delete'){
+                keyValue = 'Del' ;
+            }
+            if(keyValue == 'Meta'){
+                keyValue = 'win' ;
+            }
+            buttons[i].innerHTML = keyValue;
+            
+        }
+    }
+    keyDownHendler(event) {
         event.preventDefault();
-        document.querySelectorAll('.key').forEach(item => {
-            item.classList.remove('active');
-        });
+        let text = '';
+        let index = this.KEY_WHICH.indexOf(event.which);
+        let action = event.target.dataset.code;
+        let buttons = document.querySelectorAll('key');
+       if(!document.querySelector(`button.key[data-code=${event.code}]`)){
+            return;
+        } else {
+            document.querySelector(`button.key[data-code=${event.code}]`).classList.add('active');
+        };
+        if (event.key !== "Control" && event.key !== 'Alt' && event.key !== 'Shift' && event.code !== 'MetaLeft' && event.code !== 'Tab' && event.key !== "CapsLock" && event.key !== 'Backspace' && event.key !== 'Delete' && event.key !== 'Enter' && event.code !== 'Space') {
+            text = this.changeCase(text, index, this.isEng, this.isCapsLock, this.isShift);
+        } else {
+            if (event.key === 'Enter') {
+                text = '\n';
+            }
+            if (event.key === 'Backspace' || event.key === 'Delete') {
+                this.textarea.value = this.textarea.value.slice(0, -1);
+            }
+            if (event.code === 'Space') {
+                text = ' ';
+            }
+            if (event.key === 'Tab') {
+                text = '    ';
+            }
+            if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
+                text = 'Shift';
+                this.isShift = !this.isShift;
+            }
+        }
+        return text; 
+    }
+    keyUpHendler(event){
+        event.preventDefault();
+        let buttons = document.querySelectorAll('.key');
+        for(let btn of buttons){
+            btn.classList.remove('active');
+        }
         if ((event.code === 'AltLeft' && event.ctrlKey) || (event.altKey && event.code === 'ControlLeft')) {
             this.isEng = !this.isEng;
             localStorage.setItem('isEng', this.isEng);
-            this.addKeysOnKeyboard();
-        }
-        if (event.which === 20) {
-            this.isCapsLock = !this.isCapsLock;
-            this.addKeysOnKeyboard();
-            if (this.isCapsLock)
-                this.CAPSLOCK.classList.add('active-shift');
-            else this.CAPSLOCK.classList.remove('active-shift');
+            this.keyCaps();
         }
         if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
-            this.isShift = false;
-            this.addKeysOnKeyboard();
+            this.isShift = !this.isShift;
+            this.keyCaps();
         }
     }
-
-    keyDownHendler(event) {
+    mouseUpHandler(event){
         event.preventDefault();
-        if (!document.querySelector('span.key[datacode="' + event.code + '"]'))
+        let target = event.target.closest('.key');
+        let text = target.innerHTML;
+        if(!target){
             return;
-        else document.querySelector('span.key[datacode="' + event.code + '"]').classList.add('active');
-
-        let text = '';
-        let index = this.KEY_WHICH.indexOf(event.which);
-        text = this.changeCaseLayout(text, index, this.isEng, this.isCapsLock, this.isShift);
-
-        if (event.key !== "Control" && event.key !== 'Alt' && event.key !== 'Shift' && event.code !== 'MetaLeft' && event.code !== 'Tab' && event.key !== "CapsLock" && event.key !== 'Backspace' && event.key !== 'Delete' && event.key !== 'Enter' && event.code !== 'Space') {
-            this.TEXTAREA.innerHTML += text;
-        } else {
-            if (event.key === 'Enter') this.TEXTAREA.innerHTML += '\n';
-            if (event.key === 'Backspace') this.TEXTAREA.innerHTML = this.TEXTAREA.innerHTML.slice(0, -1);
-            if (event.code === 'Space') this.TEXTAREA.innerHTML += ' ';
-            if (event.key === 'Delete') this.TEXTAREA.innerHTML = this.TEXTAREA.innerHTML.slice(0, -1);
-            if (event.key === 'Tab') this.TEXTAREA.innerHTML += '    ';
-            if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
-                this.isShift = true;
-                this.addKeysOnKeyboard();
-            }
         }
+        target.classList.add('active');
+        if (text === 'Enter') {
+            text = '\n';
+        }
+        if (text === 'Backspace' || event.key === 'Delete') {
+            this.textarea.value = this.textarea.value.slice(0, -1);
+        }
+        if (text === ' ') {
+            text = ' ';
+        }
+        if (text === 'Tab') {
+            text = '    ';
+        }
+        if (event.code === 'ShiftLeft' || event.code === 'ShiftRight') {
+            text = 'Shift';
+            this.isShift = !this.isShift;
+        }
+        return text;
     }
 
-    addListenersOnKeys() {
-        document.addEventListener('keydown', (event) => this.keyDownHendler(event));
-        document.addEventListener('keyup', (event) => this.keyUpHendler(event));
-        document.addEventListener('mousedown', (e) => {
-            if (e.target.tagName !== "SPAN") {
-                return;
-            } else {
-                let item = e.toElement;
-                item.classList.add('active');
-                let item_data = item.getAttribute('datacode');
-                if (item_data !== "ControlRight" && item_data !== "ControlLeft" && item_data !== 'AltRight' && item_data !== 'AltLeft' && item_data !== 'ShiftLeft' && item_data !== 'ShiftRight' && item_data !== 'MetaLeft' && item_data !== 'Tab' && item_data !== "CapsLock" && item_data !== 'Backspace' && item_data !== 'Delete' && item_data !== 'Enter' && item_data !== 'Space') {
-                    this.TEXTAREA.innerHTML += item.innerText;
-                } else {
-                    if (item_data === 'Enter') this.TEXTAREA.innerHTML += '\n';
-                    if (item_data === 'Backspace') this.TEXTAREA.innerHTML = this.TEXTAREA.innerHTML.slice(0, -1);
-                    if (item_data === 'Space') this.TEXTAREA.innerHTML += ' ';
-                    if (item_data === 'Delete') this.TEXTAREA.innerHTML = this.TEXTAREA.innerHTML.slice(0, -1);
-                    if (item_data === 'Tab') this.TEXTAREA.innerHTML += '    ';
-                    if (item_data == 'ShiftLeft' || item_data == 'ShiftRight') {
-                        this.isShift = !this.isShift;
-                        this.addKeysOnKeyboard();
-                        let shiftLeft = document.querySelector('span.key[datacode="ShiftLeft"]');
-                        let shifRight = document.querySelector('span.key[datacode="ShiftRight"]');
-                        if (this.isShift == true) {
-                            if (item_data === 'ShiftLeft') shiftLeft.classList.add('active-shift');
-                            else if (item_data === 'ShiftRight') shifRight.classList.add('active-shift');
-                        }
-                    }
-                    if (item_data == 'CapsLock') {
-                        this.isCapsLock = !this.isCapsLock;
-                        this.addKeysOnKeyboard();
-                    }
-                }
-            }
-        })
-        document.addEventListener('mouseup', () => {
-            this.isShift = false;
-            this.addKeysOnKeyboard();
-            let CAPSLOCK = document.getElementById('67');
-            if (this.isCapsLock) {
-                CAPSLOCK.classList.add('active-shift');
-            } else CAPSLOCK.classList.remove('active-shift');
-        })
-    }
 }
-window.onload = () => {
-    const keyboard = new Keyboard();
-    keyboard.addListenersOnKeys();
-    keyboard.createDOM();
-    keyboard.addKeysOnKeyboard();
+window.onload = function(){
+
+    let keyboard = new Keyboard();
+    keyboard.createDisplay();
+    keyboard.addKeys();
+    let keyWrapper = this.document.querySelector('.keyboard-wrapper');
+    let btnClear = document.querySelector('.clear');
+    let showTextarea = document.querySelector('.text');
+    btnClear.addEventListener('click', () => {
+        showTextarea.value = '';
+
+    });
+    window.addEventListener('keydown', (e) =>{
+        let keytext = keyboard.keyDownHendler(e);
+        if (!keytext) {
+            keytext = '';
+        }
+        if(keytext == 'Shift'){
+            keyboard.keyCaps();
+            keytext = '';
+        }
+        showTextarea.value += keytext;
+    });
+    window.addEventListener('keyup',(e) =>{
+        keyboard.keyUpHendler(e);
+    });
+    keyWrapper.addEventListener('mousedown', (e) => {
+        let text = keyboard.mouseUpHandler(e);
+        if(!text){
+            text = '';
+        }
+        showTextarea.value += text;
+    });
 };
+ 
